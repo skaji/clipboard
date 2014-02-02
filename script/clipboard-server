@@ -1,0 +1,47 @@
+#!perl
+use strict;
+use utf8;
+use Cwd qw(abs_path);
+use File::Spec::Functions qw(catdir);
+use File::Basename qw(dirname);
+my $base; BEGIN { $base = abs_path catdir(dirname(__FILE__), "..") }
+use lib "$base/lib";
+
+use Plack::Builder;
+use ClipBoard::Web;
+
+my $app = builder {
+    enable 'Plack::Middleware::Static', path => qr{^(?:/static/)}, root => $base;
+    enable 'Plack::Middleware::Static', path => qr{^(?:/robots\.txt|/favicon\.ico)$}, root => "$base/static";
+    ClipBoard::Web->to_app;
+};
+unless (caller) {
+    my $port        = 5000;
+    my $max_workers = 4;
+
+    require Getopt::Long;
+    require Plack::Loader;
+    my $p = Getopt::Long::Parser->new(
+        config => [qw(posix_default no_ignore_case auto_help)]
+    );
+    $p->getoptions(
+        'p|port=i'      => \$port,
+        'max-workers=i' => \$max_workers,
+        'version!'      => \my $version,
+    );
+    if ($version) {
+        print "ClipBoard: $ClipBoard::VERSION\n";
+        exit 0;
+    }
+
+    print "ClipBoard: http://0.0.0.0:${port}/\n";
+
+    my $loader = Plack::Loader->load('Starlet',
+        port        => $port,
+        host        => "0.0.0.0",
+        max_workers => $max_workers,
+    );
+    $loader->run($app);
+    exit;
+}
+return $app;

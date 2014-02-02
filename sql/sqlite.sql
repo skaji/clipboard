@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS user (
+      id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+    , name VARCHAR(255) NOT NULL
+    , pass VARCHAR(255) NOT NULL
+    , UNIQUE(name)
+);
+
+CREATE TABLE IF NOT EXISTS clip (
+      id         INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+    , user_id    INTEGER NOT NULL
+    , created_at INTEGER UNSIGNED NOT NULL
+    , content    TEXT
+    , FOREIGN KEY(user_id) REFERENCES user(id)
+);

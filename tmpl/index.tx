@@ -1,0 +1,33 @@
+: cascade "include/layout.tx"
+
+: override content -> {
+
+<h1 class="page-header">clip board list</h1>
+
+
+<table class="table">
+<thead>
+    <tr>
+    <th>id</th> <th>user</th> <th>content</th> <th>created_at</th>
+    </tr>
+</thead>
+<tbody>
+    
+: for $clip -> $c {
+    <tr>
+        <td><: $c.id :></td>
+        <td><: $c.user_name :></td>
+        <td><pre><: $c.content :></pre></td>
+        <td><: $c.created_at :></td>
+    </tr>
+: }
+</tbody>
+</table>
+
+<form action="/reset" method="POST">
+<button type="submit" class="btn btn-danger">RESET ALL</button>
+</form>
+
+
+
+: }
