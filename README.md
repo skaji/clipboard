@@ -8,7 +8,7 @@ Share clipboad with several machines.
 
 In .bashrc:
 
-    alias pbcopy='perl -e '\''$/ = undef; $d = <STDIN>; exec "curl", "http://user:pass\@shoichi.me:5555/pbcopy", "--data-binary", $d'\'''
+    alias pbcopy='perl -e '\''$/ = undef; $d = <>; exec "curl", "http://user:pass\@shoichi.me:5555/pbcopy", "--data-binary", $d'\'''
     alias pbpaste='curl '\''http://user:pass@shoichi.me:5555/pbpaste'\'''
 
 (change user and pass appropriately)
