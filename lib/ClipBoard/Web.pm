@@ -49,12 +49,8 @@ sub render_text {
 
 sub unauthorized {
     my $self = shift;
-    my $res  = $self->create_response(401);
-    my $body = 'Authorization required';
-    $res->content_type('text/plain');
-    $res->content_length(length $body);
+    my $res  = $self->render_text(401, 'Authorization required');
     $res->header('WWW-Authenticate' => 'Basic realm="restricted area"');
-    $res->body($body);
     $res;
 }
 sub authenticate {
